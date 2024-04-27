@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import BlogCard from './components/BlogCard';
 const articlesData = [
   // No Diabetes Category
   {
@@ -123,13 +123,19 @@ const Blogs = () => {
   );
 
   return (
-    <div className="blog-page py-16 px-4 bg-gradient-to-r from-sky-500 to-teal-500">
-      <h2 className="text-3xl font-bold text-center mb-8 text-white">
-        Stay Informed: Explore Articles Related to Your Health
-      </h2>
+    <div className="py-16 px-4 text-center lg:text-left">
+      <div className="container mx-auto flex flex-row items-center">
+        <div className="border border-primary w-8/12 h-20  rounded-2xl flex items-center mr-24">
+          <div className="flex items-center">
+            <div className="w-10 h-10 bg-white rounded-md mr-8"></div>
+            <h2 className="text-primary text-3xl font-bold">Stay Informed: Explore Articles Related to Your Health</h2>
+          </div>
+        </div>
+      </div>
 
       {category && (
         <div className="container mx-auto">
+          {/* Pagination section */}
           {articles.length > articlesPerPage && (
             <div className="pagination flex justify-center mb-8">
               {Array.from({ length: Math.ceil(articles.length / articlesPerPage) }, (_, i) => (
@@ -146,35 +152,29 @@ const Blogs = () => {
             </div>
           )}
 
+          {/* Displayed articles section */}
           {displayedArticles.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {displayedArticles.map((article) => (
-                <div key={article.id} className="article-card rounded-lg shadow-md overflow-hidden">
-                  <div className="relative">
-                    <iframe
-                      src={article.url}
-                      className="w-full h-48 object-cover"
-                      frameBorder="0"
-                      allowFullScreen
-                      title="Article Summary"
-                    />
-                    <div className="absolute bottom-0 left-0 bg-gray-900 bg-opacity-50 p-2 text-white">
-                      <p className="text-sm truncate">{article.title}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            {displayedArticles.map((article) => (
+              <BlogCard key={article.id} article={article} />
+            ))}
+          </div>
           ) : (
             <p className="text-center text-white">No articles found in this category.</p>
           )}
         </div>
       )}
 
+      {/* Conditional rendering for when category is null */}
       {!category && (
-        <p className="text-center text-gray-600">
-          Waiting for your health assessment... Get started by taking the risk test!
-        </p>
+        <div className="container mx-auto">
+          {/* Display all articles using BlogCard component */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {articlesData.map((article) => (
+              <BlogCard key={article.id} article={article} />
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );

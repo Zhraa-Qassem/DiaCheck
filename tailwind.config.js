@@ -7,9 +7,9 @@ export default {
 				custom: "0 0 10px  #5555551A",
 			},
 			colors: {
-        'primary': '#11E5BB',
-        'secondary': '#7BA6BD',
-        'def-gray': '#DDDDDD',
+        'primary': '#FF960C',
+        'secondary': '#1c58ff',
+        'def-hover': '#ffc57b',
         'def-blue': '#0EA5E9',
 
 				"smocky-100": "#EDEDEF",
@@ -25,6 +25,10 @@ export default {
 				"smocky-900": "#222226",
 				"smocky-950": "#1A191D"
 			},
+			fontFamily: {
+				fugaz: '"Fugaz One"', 
+				Lugrasimo: '"Lugrasimo"', 
+			  },
 			width: {
 				careerCard: "335px",
 				searchInput: "400px",

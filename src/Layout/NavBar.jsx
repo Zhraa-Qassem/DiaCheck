@@ -41,8 +41,8 @@ export const NavBar = () => {
         <>
             {/* Mobile */}
             {showMenu && (
-                <div className="fixed top-0 left-0 flex-col w-full h-full z-50 text-black bg-blue-600 shadow-lg pt-16 flex md:hidden">
-                    <div className="flex flex-col gap-4 w-screen justify-center items-center text-xl pt-10">
+                <div className=" fixed top-0 left-0 flex-col w-full h-full z-50 text-black bg-blue-600 shadow-lg pt-16 flex md:hidden">
+                    <div className="flex flex-col gap-4 w-screen justify-center items-center pt-10">
                         {navItems.map((item, index) => (
                             <NavLink
                                 key={index}
@@ -83,12 +83,12 @@ export const NavBar = () => {
             )}
 
             {/* Desktop */}
-            <nav className=" bg-white border border-def-gray wrapper p-4 flex items-center justify-between text-black gap-16 fixed w-screen z-50">
+            <nav className=" bg-white border border-def-gray wrapper p-4 flex items-center justify-between text-black text-xl font-medium gap-16 fixed w-screen z-50">
                 {/* Left Section */}
-                <div className="flex items-center gap-5 grow-0">
+                <div className="flex items-center gap-5 grow-0 text-2xl font-semibold">
                     {/* Logo */}
                     <Link to={"/"} onClick={closeMenu}>
-                    Dia<span className="text-def-blue ">Detect</span> 
+                    Dia<span className="text-primary">Detect</span> 
                     </Link>
                     {/* Languages */}
                     
@@ -101,7 +101,7 @@ export const NavBar = () => {
                             to={item.route}
                             className={(navData) =>
                                 navData.isActive
-                                    ? "underline underline-offset-4 decoration-yellow-600"
+                                    ? "underline underline-offset-4 decoration-primary"
                                     : ""
                             }
                         >

@@ -23,7 +23,6 @@
     "react-scripts": "5.0.1",
     "react-swiper": "^0.1.5",
     "swiper": "^6.8.4",
-    "vite": "^5.2.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

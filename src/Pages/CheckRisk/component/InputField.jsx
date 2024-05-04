@@ -8,7 +8,7 @@ const InputField = ({ type, id, name, value, onChange, description }) => {
           name={name}
           value={value}
           onChange={onChange}
-          className="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-5/6 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <p className="text-gray-300 text-sm">{description}</p>
       </div>

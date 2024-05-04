@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
+import insneddle from "../assets/insneddle.png";
 
 const navItems = [
     {
@@ -17,8 +18,8 @@ const navItems = [
         route: "/about",
     },
     {
-      title: "Blogs",
-      route: "/blogs",
+      title: "Articles",
+      route: "/articles",
   },
 ];
 
@@ -41,8 +42,8 @@ export const NavBar = () => {
         <>
             {/* Mobile */}
             {showMenu && (
-                <div className=" fixed top-0 left-0 flex-col w-full h-full z-50 text-black bg-blue-600 shadow-lg pt-16 flex md:hidden">
-                    <div className="flex flex-col gap-4 w-screen justify-center items-center pt-10">
+                <div className=" fixed top-0 left-0 flex-col w-full h-full  z-50 text-black  shadow-lg pt-16 flex md:hidden">
+                    <div className="flex flex-col gap-4 w-screen justify-center items-center pt-10 ">
                         {navItems.map((item, index) => (
                             <NavLink
                                 key={index}
@@ -62,14 +63,14 @@ export const NavBar = () => {
                                 to="/login"
                                 className={(navData) =>
                                     navData.isActive
-                                        ? "underline underline-offset-4 decoration-sky-500"
+                                        ? "underline underline-offset-4 decoration-primary"
                                         : ""
                                 }
                             >
                                 Login
                             </NavLink>
                             <button
-                                className="rounded-lg text-black bg-primary px-4 py-1"
+                                className="rounded-lg text-white bg-primary px-4 py-1 "
                                 onClick={() => {
                                     navigate("/signup");
                                     closeMenu();
@@ -83,14 +84,17 @@ export const NavBar = () => {
             )}
 
             {/* Desktop */}
-            <nav className=" bg-white border border-def-gray wrapper p-4 flex items-center justify-between text-black text-xl font-medium gap-16 fixed w-screen z-50">
+            <nav className=" bg-white border border-def-gray wrapper py-3 px-8 flex items-center justify-between  text-black text-xl font-medium gap-16 fixed w-screen z-50">
                 {/* Left Section */}
                 <div className="flex items-center gap-5 grow-0 text-2xl font-semibold">
                     {/* Logo */}
-                    <Link to={"/"} onClick={closeMenu}>
-                    Dia<span className="text-primary">Detect</span> 
+                    
+                    <Link to={"/"} onClick={closeMenu} className="flex flex-row items-center justify-center text-center">
+                    <img src={insneddle} alt="logo" className="w-14 h-14" />
+                    <p className="text-center justify-center h-full">Dia<span className="text-primary">Detect</span> </p>
+                    
                     </Link>
-                    {/* Languages */}
+                   
                     
                 </div>
                 {/* Middle */}
@@ -101,8 +105,8 @@ export const NavBar = () => {
                             to={item.route}
                             className={(navData) =>
                                 navData.isActive
-                                    ? "underline underline-offset-4 decoration-primary"
-                                    : ""
+                                    ? " transform hover:scale-105 underline underline-offset-8 decoration-primary"
+                                    : "transform hover:scale-105"
                             }
                         >
                             {item.title}
@@ -110,14 +114,14 @@ export const NavBar = () => {
                     ))}
                 </div>
                 {/* Right Side */}
-                <div className="hidden md:flex items-center gap-6 grow-0">
-                    <a href="/login">Login</a>
+                <div className="hidden md:flex items-center gap-6 grow-0 transform hover:scale-105">
+                    
                     <button
                         href=""
-                        className="rounded-lg text-black bg-primary px-4 py-1"
-                        onClick={() => navigate("/signup")}
+                        className="rounded-lg text-white bg-primary px-4 py-1 transform hover:scale-105 border hover:bg-white hover:text-primary hover:border-primary "
+                        onClick={() => navigate("/contactUs")}
                     >
-                        Sign up
+                    Contact Us
                     </button>
                 </div>
                 {/* Mobile Burger Menu and X Icon */}

@@ -7,7 +7,7 @@ const Layout = ({}) => {
   return (
     <>
     <NavBar />
-    <div className='pt-10'>
+    <div className='pt-10 overflow-hidden'>
       <Outlet />
     </div>
     <Footer />

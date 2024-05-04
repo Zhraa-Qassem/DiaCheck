@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BlogCard from './components/BlogCard';
+import ArticleHeader from './components/ArticleHeader';
+import PredictionHeader from '../CheckRisk/component/PredictionHeader';
 const articlesData = [
   // No Diabetes Category
   {
@@ -99,19 +101,33 @@ const articlesData = [
 ];
 
 const Blogs = () => {
-  const [category, setCategory] = useState(null);
+  const urlParams = new URLSearchParams(window.location.search);
+  const prediction = urlParams.get('prediction');
+
   const [articles, setArticles] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [articlesPerPage] = useState(10);
 
-  useEffect(() => {
-    setArticles(articlesData.filter((article) => article.category === category));
-  }, [category]);
 
-  const handleCategoryChange = (predictedCategory) => {
-    setCategory(predictedCategory);
-    setCurrentPage(1);
-  };
+  useEffect(() => {
+    // Filter articles based on the prediction
+    let filteredArticles = [];
+    if (prediction === 0) {
+      // No diabetes
+      filteredArticles = articlesData.filter((article) => article.category === "no-diabetes");
+    } else if (prediction === 1) {
+      // Low risk of diabetes
+      filteredArticles = articlesData.filter((article) => article.category === "have-a-risk-of-diabetes");
+    } else if (prediction === 2) {
+      // High risk of diabetes
+      filteredArticles = articlesData.filter((article) => article.category === "have-diabetes");
+    } else {
+      // Default: No prediction or invalid prediction
+      filteredArticles = articlesData;
+    }
+
+    setArticles(filteredArticles);
+  }, [prediction]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -123,58 +139,42 @@ const Blogs = () => {
   );
 
   return (
-    <div className="py-16 px-4 text-center lg:text-left">
-      <div className="container mx-auto flex flex-row items-center">
-        <div className="border border-primary w-8/12 h-20  rounded-2xl flex items-center mr-24">
-          <div className="flex items-center">
-            <div className="w-10 h-10 bg-white rounded-md mr-8"></div>
-            <h2 className="text-primary text-3xl font-bold">Stay Informed: Explore Articles Related to Your Health</h2>
-          </div>
-        </div>
-      </div>
+    <div className="py-16 px-4  ml-8 flex flex-col items-center justify-center text-center lg:text-left">
+      {/* Conditional rendering for header */}
+      {prediction !== null ? <PredictionHeader prediction={prediction} /> : <ArticleHeader />}
 
-      {category && (
-        <div className="container mx-auto">
-          {/* Pagination section */}
-          {articles.length > articlesPerPage && (
-            <div className="pagination flex justify-center mb-8">
-              {Array.from({ length: Math.ceil(articles.length / articlesPerPage) }, (_, i) => (
-                <button
-                  key={i + 1}
-                  className={`px-4 py-2 mr-2 rounded-md text-white shadow-md hover:bg-blue-700 focus:outline-none ${
-                    currentPage === i + 1 ? 'bg-blue-500' : ''
-                  }`}
-                  onClick={() => handlePageChange(i + 1)}
-                >
-                  {i + 1}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* Displayed articles section */}
-          {displayedArticles.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {displayedArticles.map((article) => (
-              <BlogCard key={article.id} article={article} />
-            ))}
-          </div>
-          ) : (
-            <p className="text-center text-white">No articles found in this category.</p>
-          )}
+      {/* Pagination section */}
+      <div className='w-full flex flex-col text-start items-start justify-start  '>
+      {articles.length > articlesPerPage && (
+        <div className="pagination flex justify-center mb-8">
+          {Array.from({ length: Math.ceil(articles.length / articlesPerPage) }, (_, i) => (
+            <button
+              key={i + 1}
+              className={`px-4 py-2 mr-2 rounded-md text-primary shadow-md hover:bg-white hover:text-primary border hover:border-primary focus:outline-none ${
+                currentPage === i + 1 ? 'bg-primary text-white hover:text-primary border hover:border-primary hover:bg-white' : ''
+              }`}
+              onClick={() => handlePageChange(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
         </div>
       )}
+      </div>
 
-      {/* Conditional rendering for when category is null */}
-      {!category && (
+      {/* Displayed articles section */}
+      {displayedArticles.length > 0 ? (
         <div className="container mx-auto">
-          {/* Display all articles using BlogCard component */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {articlesData.map((article) => (
-              <BlogCard key={article.id} article={article} />
+          <div className="flex flex-col w-full">
+            {displayedArticles.map((article) => (
+              <div key={article.id} className="flex flex-col">
+                <BlogCard article={article} />
+              </div>
             ))}
           </div>
         </div>
+      ) : (
+        <p className="text-center text-white">No articles found.</p>
       )}
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import InputField from './component/InputField';
+import RiskHeader from './component/RiskHeader';
 
 const CheckRisk = () => {
   const [formData, setFormData] = useState({
@@ -16,14 +17,39 @@ const CheckRisk = () => {
     bmi: '',
   });
 
+
   const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+    // If the changed field is 'gender', assign '1' for male and '2' for female
+    const modifiedValue = name === 'gender' ? (value.toLowerCase() === 'male' ? '1' : '2') : value;
+    setFormData({ ...formData, [name]: modifiedValue });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle form submission here (e.g., send data to server)
-    console.log('Form submitted:', formData);
+    formData.gender = formData.gender.toLowerCase() === 'male' ? '1' : '2';
+  
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/diabetes/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const data = await response.json();
+      console.log('Server response:', data);
+  
+      // Redirect to blogs page with the prediction result
+      window.location.href = `/articles?prediction=${data.prediction}`;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
 
   const tests = [
@@ -37,27 +63,21 @@ const CheckRisk = () => {
     { type: 'number', id: 'vldl', name: 'vldl', value: formData.vldl, onChange: handleChange, description: 'Indicates very low-density lipoprotein.' },
     { type: 'number', id: 'bmi', name: 'bmi', value: formData.bmi, onChange: handleChange, description: 'Measures body fat based on height and weight.' },
   ];
+  
 
   return (
     <div className="py-16 px-4 lg:px-0 text-center lg:text-left">
       <div className="flex flex-col items-center justify-center">
-        <div className="bg-primary rounded-2xl p-8 w-2/3 mb-6">
-          <h1 className="text-4xl font-bold text-white text-center leading-normal">
-            Know Your Risk
-          </h1>
-          <h1 className="text-4xl font-bold text-white text-center">
-            Take the Diabetes Risk Assessment
-          </h1>
-        </div>
+        <RiskHeader />
         <div className="bg-primary rounded-2xl p-8 w-11/12">
           <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
             <div className="flex items-center space-x-4">
               <label htmlFor="gender" className="text-white text-lg">Gender:</label>
               <select id="gender" name="gender" value={formData.gender} onChange={handleChange} className="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Select</option>
-                <option value="male">Male</option>
+                <option value="">-- Please Select --</option>  <option value="male">Male</option>
                 <option value="female">Female</option>
               </select>
+
             </div>
             <div className="flex items-center space-x-4">
               <label htmlFor="age" className="text-white text-lg">Age:</label>
@@ -70,7 +90,7 @@ const CheckRisk = () => {
                 className="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 ">
               {tests.map((test, index) => (
                 <InputField key={index} {...test} />
               ))}

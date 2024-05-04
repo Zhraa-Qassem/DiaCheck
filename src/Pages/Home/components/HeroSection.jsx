@@ -27,7 +27,7 @@ const HeroSection = () => {
             Gain valuable insights about your diabetes risk with a quick and easy click.
           </p>
           <Link to="/riskCheck">
-            <button className=" bg-white text-primary font-bold py-2 px-6 rounded-full shadow-lg transition duration-300 hover:bg-yellow-300 hover:text-white">
+            <button className=" bg-white text-primary font-bold py-2 px-6 rounded-full shadow-lg border transform hover:scale-105 hover:bg-primary hover:text-white hover:border-white hover:shadow-md ">
               Check Your Risk Now
             </button>
           </Link>
